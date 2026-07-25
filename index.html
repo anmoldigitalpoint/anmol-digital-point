@@ -4,10 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anmol Digital Point - Your Trusted Digital Service Center</title>
+<meta name="description" content="Anmol Digital Point, Nawada - Aadhaar, PAN, Voter ID, Passport aur sabhi digital services ek hi jagah. Fast, Secure, Reliable.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="style.css">
+
+<!-- Libraries used by the free tools (all client-side, no server / no data upload) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="module">
+  import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal/dist/browser.js";
+  window.__removeBackground = removeBackground;
+</script>
 </head>
 <body>
+
+<!-- ===== SCROLLING UPDATE TICKER ===== -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
 
 <!-- ===== HEADER ===== -->
 <header class="site-header" id="siteHeader">
@@ -23,14 +37,15 @@
     <nav class="main-nav" id="mainNav">
       <a href="#home" class="active">Home</a>
       <a href="#services">Services</a>
+      <a href="#tools">Free Tools</a>
       <a href="#gallery">Gallery</a>
       <a href="#notices">Notice Board</a>
       <a href="#contact">Contact Us</a>
     </nav>
 
     <div class="header-actions">
-      <a href="tel:+917079195293" class="btn btn-outline"><i class="fa-solid fa-phone"></i> <span>Call Us</span></a>
-      <a href="https://wa.me/917079195293" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span></a>
+      <a href="tel:+916207120625" data-role="call-btn" class="btn btn-outline"><i class="fa-solid fa-phone"></i> <span>Call Us</span></a>
+      <a href="https://wa.me/916207120625" data-role="whatsapp-btn" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span></a>
       <button class="hamburger" id="hamburger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
@@ -44,8 +59,8 @@
       <h2>All Digital Services <span>Under One Roof</span></h2>
       <p class="hero-sub">हर डिजिटल सेवा, एक ही जगह। हम आपके लिए सबसे तेज़ और भरोसेमंद डिजिटल सर्विस प्रदान करते हैं।</p>
       <div class="hero-btns">
-        <a href="https://wa.me/917079195293" class="btn btn-whatsapp large"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
-        <a href="tel:+917079195293" class="btn btn-primary large"><i class="fa-solid fa-phone"></i> Call Now</a>
+        <a href="https://wa.me/916207120625" data-role="whatsapp-btn" class="btn btn-whatsapp large"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+        <a href="tel:+916207120625" data-role="call-btn" class="btn btn-primary large"><i class="fa-solid fa-phone"></i> Call Now</a>
       </div>
       <div class="hero-badges">
         <div class="badge"><i class="fa-solid fa-bolt"></i><span>Fast Service</span></div>
@@ -71,6 +86,7 @@
 <!-- ===== SERVICES ===== -->
 <section class="services" id="services">
   <h2 class="section-title">Our <span>Services</span></h2>
+  <p class="section-sub">Kisi bhi service par click karke uski official government website par jaayein</p>
   <div class="services-grid" id="servicesGrid"></div>
   <div class="services-more">
     <a href="#services" class="btn btn-primary">View All Services <i class="fa-solid fa-arrow-right"></i></a>
@@ -78,30 +94,33 @@
 </section>
 
 <!-- ===== NOTICE + QR + PAY + WHY US ===== -->
-<section class="info-cards">
+<section class="info-cards" id="notices">
   <div class="card notice-card">
-    <h3><i class="fa-solid fa-bullhorn"></i> Live Notice Board</h3>
+    <h3><div class="icon-3d"><i class="fa-solid fa-bullhorn"></i></div> Live Notice Board</h3>
     <ul id="noticeList"></ul>
     <a href="#notices" class="link-more">View All Notices <i class="fa-solid fa-arrow-right"></i></a>
   </div>
 
   <div class="card qr-card">
-    <h3><i class="fa-solid fa-qrcode"></i> QR Scanner</h3>
+    <h3><div class="icon-3d"><i class="fa-solid fa-qrcode"></i></div> QR Scanner</h3>
     <p>Scan Any QR Code</p>
     <div class="qr-box"><i class="fa-solid fa-qrcode"></i></div>
     <button class="btn btn-primary full">Start Scanning</button>
   </div>
 
-  <div class="card pay-card">
-    <h3><i class="fa-solid fa-wallet"></i> Pay Online (UPI)</h3>
+  <div class="card pay-card" id="payment">
+    <h3><div class="icon-3d"><i class="fa-solid fa-wallet"></i></div> Pay Online (UPI)</h3>
     <p>Scan &amp; Pay</p>
-    <div class="qr-box"><i class="fa-solid fa-qrcode"></i></div>
-    <p class="upi-id">UPI ID: yourid@ybl</p>
-    <div class="pay-icons"><i class="fa-brands fa-google-pay"></i><i class="fa-solid fa-money-check-dollar"></i></div>
+    <div class="qr-box"><img src="images/upi-qr.jpg" alt="Anmol Digital Point UPI QR Code"></div>
+    <p class="upi-id" id="upiIdText"></p>
+    <div class="pay-meta">
+      <span><i class="fa-solid fa-phone"></i> <span id="shopPhoneText"></span></span>
+      <span><i class="fa-solid fa-location-dot"></i> <span id="shopAddrText"></span></span>
+    </div>
   </div>
 
   <div class="card why-card">
-    <h3><i class="fa-solid fa-star"></i> Why Choose Us?</h3>
+    <h3><div class="icon-3d"><i class="fa-solid fa-star"></i></div> Why Choose Us?</h3>
     <ul class="why-list">
       <li><i class="fa-solid fa-circle-check"></i> 100% Genuine Work</li>
       <li><i class="fa-solid fa-circle-check"></i> Fast &amp; Reliable Service</li>
@@ -111,6 +130,13 @@
       <li><i class="fa-solid fa-circle-check"></i> 24x7 Support</li>
     </ul>
   </div>
+</section>
+
+<!-- ===== FREE ONLINE TOOLS ===== -->
+<section class="tools" id="tools">
+  <h2 class="section-title">Free Online <span>Tools</span></h2>
+  <p class="section-sub">Bilkul free, koi bhi file server par upload nahi hoti — sab kuch aapke phone/browser me hi hota hai</p>
+  <div class="tools-grid" id="toolsGrid"></div>
 </section>
 
 <!-- ===== GALLERY ===== -->
@@ -125,19 +151,19 @@
 <!-- ===== REVIEWS + MAP ===== -->
 <section class="bottom-grid">
   <div class="card reviews-card">
-    <h3><i class="fa-solid fa-comment-dots"></i> Customer Reviews</h3>
+    <h3><div class="icon-3d"><i class="fa-solid fa-comment-dots"></i></div> Customer Reviews</h3>
     <div id="reviewsList"></div>
     <a href="#" class="link-more">View All Reviews <i class="fa-solid fa-arrow-right"></i></a>
   </div>
   <div class="card map-card">
-    <h3><i class="fa-solid fa-location-dot"></i> We Are Here</h3>
+    <h3><div class="icon-3d"><i class="fa-solid fa-location-dot"></i></div> We Are Here</h3>
     <div class="map-box">
       <iframe title="location map" loading="lazy"
-        src="https://maps.google.com/maps?q=digital%20seva%20kendra&t=&z=13&ie=UTF8&iwloc=&output=embed">
+        src="https://maps.google.com/maps?q=Anmol%20Digital%20Point%20Rupow%20Nawada%20Bihar%20805106&t=&z=14&ie=UTF8&iwloc=&output=embed">
       </iframe>
     </div>
-    <p class="addr"><i class="fa-solid fa-location-dot"></i> Anmol Digital Point, Main Road, Your City, State - 000000</p>
-    <a href="#" class="link-more">Get Direction <i class="fa-solid fa-arrow-right"></i></a>
+    <p class="addr"><i class="fa-solid fa-location-dot"></i> Anmol Digital Point, Main Road, Rupow Nawada, Nare Charaul Gate Ke Samne, Nawada, Bihar - 805106</p>
+    <a href="https://maps.google.com/?q=Anmol+Digital+Point+Rupow+Nawada+Bihar+805106" target="_blank" rel="noopener" class="link-more">Get Direction <i class="fa-solid fa-arrow-right"></i></a>
   </div>
 </section>
 
@@ -145,30 +171,48 @@
 <footer class="site-footer" id="contact">
   <p>Copyright © 2026 Anmol Digital Point. All Rights Reserved.</p>
   <div class="footer-links">
-    <a href="#">Privacy Policy</a> • <a href="#">Terms &amp; Conditions</a>
+    <a id="openPrivacy">Privacy Policy</a> • <a id="openDisclaimer">Disclaimer</a> • <a id="openTerms">Terms &amp; Conditions</a>
   </div>
-  <div class="footer-social">
-    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-    <a href="https://wa.me/917079195293"><i class="fa-brands fa-whatsapp"></i></a>
-  </div>
+  <div class="footer-social" id="footerSocial"></div>
 </footer>
 
 <!-- ===== FLOATING MOBILE ACTIONS ===== -->
 <div class="floating-actions">
-  <a href="https://wa.me/917079195293" class="fab fab-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
-  <a href="tel:+917079195293" class="fab fab-call"><i class="fa-solid fa-phone"></i></a>
+  <a href="https://wa.me/916207120625" data-role="whatsapp-btn" class="fab fab-whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+  <a href="tel:+916207120625" data-role="call-btn" class="fab fab-call"><i class="fa-solid fa-phone"></i></a>
 </div>
 
 <!-- ===== MOBILE BOTTOM NAV ===== -->
 <nav class="bottom-nav">
   <a href="#home" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
   <a href="#services"><i class="fa-solid fa-list"></i><span>Services</span></a>
-  <a href="#gallery"><i class="fa-solid fa-images"></i><span>Gallery</span></a>
+  <a href="#tools"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Tools</span></a>
   <a href="#contact"><i class="fa-solid fa-phone"></i><span>Contact</span></a>
 </nav>
 
+<!-- ===== TOOL MODAL (shared by all 5 tools) ===== -->
+<div class="modal-overlay" id="toolModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="toolModalTitle">Tool</h3>
+      <button class="modal-close" id="toolModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="toolModalBody"></div>
+  </div>
+</div>
+
+<!-- ===== LEGAL MODAL (Privacy / Disclaimer / Terms) ===== -->
+<div class="modal-overlay" id="legalModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="legalModalTitle">Policy</h3>
+      <button class="modal-close" id="legalModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body legal-body" id="legalModalBody"></div>
+  </div>
+</div>
+
 <script src="script.js"></script>
+<script src="legal.js"></script>
 </body>
-</html>
+                                                     </html>
